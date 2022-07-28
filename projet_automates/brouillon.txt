@@ -1,0 +1,507 @@
+Brouillon :
+
+ def determinisation(auto) : #A refaire
+        """ Automate  -> Automate
+        rend l'automate déterminisé d'auto
+        """
+        
+        if(auto.estDeterministe(auto)):
+            print("L'automate était déjà déterminise")
+       	    return auto
+       	    
+        NewAuto= Automate([])
+        EnsembleInit=set()
+        EnsembleFinal=set()
+        Ensemble=st() 
+        alphabet = []
+        listeInit = auto.getListInitialStates()
+        
+        for etat in auto.listeStates :
+		for alpha in auto.getListTransitionsFrom(etat):
+			if alpha.etiquette in alphabet :
+				continue
+			alphabet.append(alpha.etiquette)
+	for a in alphabet :
+		for b in auto.listeState :
+			if b.init==False:
+				if b.fin==False :
+					for c in auto.getListTransitionsFrom(b):
+						if c.etiquette==a :
+							Ensemble.add(b.id)
+			etat1=State(Ensemble,False,False,
+		
+	
+
+        return NewAuto
+        
+        
+        
+            def determinisation(auto) : #A refaire
+        """ Automate  -> Automate
+        rend l'automate déterminisé d'auto
+        """
+        
+        if(auto.estDeterministe(auto)):
+            print("L'automate était déjà déterministe")
+       	    return auto
+       	    
+        newAuto= Automate([])
+        EnsembleInit=set()
+        EnsembleFinal=set()
+        Ensemble=set() 
+        ensembleListe = []#liste des etats suivants
+        alphabet = []
+        trash = set()
+        listeInit = auto.getListInitialStates()
+        
+        for etat in auto.listStates : #pour avoir l'alphabet
+		for alpha in auto.getListTransitionsFrom(etat):
+			if alpha.etiquette in alphabet :
+				continue
+			alphabet.append(alpha.etiquette)
+		
+	for b in listeInit :	
+		for a in alphabet :
+			EnsembleInit.add(b)
+			etat11 = State(EnsembleInit,True,b.fin)
+			newAuto.addState(etat11)
+			
+			for succ in auto.succElem(b,a) :
+				if succ in Ensemble :
+					continue
+				ensembleListe.append(succ)
+				Ensemble.add(succ.id)
+			for f in ensembleListe :
+				if f.fin==True :
+					etat12=State(Ensemble,False,True)
+				etat12=State(Ensemble,False,False)
+				newAuto.addState(etat12)
+				trans = Transition(etat11,a,etat12)
+			newAuto.addTransition(trans)
+		longueur=len(ensembleListe)
+		while(longueur!=0) :
+			for e in ensembleListe :
+				for et in auto.succElem(e,a) :
+					if et in trash :
+						continue
+					trash.add(et)
+				for ii in trash :
+					if ii.fin==True:
+						etat13=State(trash,False,True)
+					etat13=State(trash,False,False)
+					newAuto.addState(etat13)
+					transs=Transition(e,a,etat13)
+			longueur=longueur-1 
+		newAuto.addTransition(transs)
+
+	
+
+        return newAuto
+        
+        
+        
+        
+         def determinisation(auto) : #A refaire
+        """ Automate  -> Automate
+        rend l'automate déterminisé d'auto
+        """
+        if(auto.estDeterministe(auto)):
+            print("L'automate était déjà déterministe")
+       	    return auto
+       	    
+        newAutoD= Automate([])
+        EnsembleInit=set()
+        EnsembleFinal=set()
+        Ensemble=set() 
+        ensembleListe = []#liste des etats suivants
+        alphabet = []
+        trash = set()
+        listeInit = auto.getListInitialStates()
+      
+        for etat in auto.listStates : #pour avoir l'alphabet
+		for alpha in auto.getListTransitionsFrom(etat):
+			if alpha.etiquette in alphabet :
+				continue
+			alphabet.append(alpha.etiquette)
+	
+	for a in alphabet :
+		
+		for b in listeInit :
+			EnsembleInit.add(b)
+		
+			etat11 = State(EnsembleInit,True,b.fin)
+			newAutoD.addState(etat11)
+	
+
+			for succ in auto.succElem(b,a) :
+				if succ in Ensemble :
+					continue
+				ensembleListe.append(succ)
+				Ensemble.add(succ.id)
+			for f in ensembleListe :
+				if (f.fin==True) :
+					etat12=State(Ensemble,False,True)
+				etat12=State(Ensemble,False,False)
+				newAutoD.addState(etat12)
+				trans = Transition(etat11,a,etat12)
+			newAutoD.addTransition(trans)
+		longueur=len(ensembleListe)
+		while(longueur!=0) :
+			for e in ensembleListe :
+				for et in auto.succElem(e,a) :
+					if et in trash :
+						continue
+					trash.add(et)
+				for ii in trash :
+					if (ii.fin==True) :
+						etat13=State(trash,False,True)
+					etat13=State(trash,False,False)
+					newAutoD.addState(etat13)
+					transs=Transition(e,a,etat13)
+			longueur=longueur-1 
+		newAutoD.addTransition(transs)
+
+	
+
+        return newAutoD
+        
+        
+            @staticmethod
+    def determinisation(auto) : #A refaire
+        """ Automate  -> Automate
+        rend l'automate déterminisé d'auto
+        """
+        if(auto.estDeterministe(auto)):
+            print("L'automate était déjà déterministe")
+       	    return auto
+       	    
+        newAutoD=Automate([])
+        ListeInit=set()
+        for e in auto.getListInitialStates() :
+        	
+        	initialState=State(e.id,True,e.fin)
+        	newAutoD.addState(initialState)
+        	for o in auto.getListTransitionsFrom(e) :
+        		if e in ListeInit :
+        			continue
+        		ListeInit.add(e)
+        		for i in ListeInit :
+        			for p in auto.listStates :
+        				if i==p :
+        					eeta=State(ListeInit,False,p.fin)
+        					newAutoD.addState(eeta)
+        				continue
+        			t=Transition(initialState,o.etiquette,eeta)
+        			newAutoD.addTransition(t)
+        return newAutoD
+        
+        
+        
+        ------------------------------
+        
+        
+        for t in auto.getAlphabetFromTransitions() :
+		for i in auto.getListInitialStates():
+			oldState=i
+			newAutoD.addState(oldState)
+		
+		
+			for p in auto.succElem(i,t) :
+				Ens.add(p)
+			Dictionnaire[t]=Ens
+	
+			newState=State(Dictionnaire.get(t),False,False)
+			newState=State(Dictionnaire.get(t),False,True)
+			t=Transition(oldState,t,newState)
+			newAutoD.addTransition(t)
+	return newAutoD
+	
+	
+	
+	    def union (auto0, auto1): #A refaire
+        """ Automate x Automate -> Automate
+        rend l'automate acceptant pour langage l'union des langages des deux automates
+        """
+        auto_inter= Automate.intersection(auto0, auto1) #On sait que l'union donne le même automate que l'intersection, sauf que les états finaux changent
+        
+       	etatfinal=auto0.getListFinalStates() #On récupère donc la liste des états finaux de l'automate 0 
+       
+       	etatfinal1=auto1.getListFinalStates() #On récupère aussi la liste des états finaux de l'automate 1
+        etat=etatfinal+etatfinal1 #reunis les deux listes pour obtenir la liste complètes des états finaux des 2 automates pour vérifier chaque état de auto_inter, s'il fait partie de cette liste, alors c'est un état final
+        
+        for s in auto_inter.listStates : #On parcours donc les états de l'automate auto_inter
+        	alpha=[str(s.id)] #On récupère les id pour comparer dans la liste pour voir s'ils sont dans la liste des états finaux
+        	print(s.id)
+        	for a in alpha : #on parcours donc la liste alpha pour comparer
+        		print(a)
+        		if a in etat : #si la lettre est dans la liste c'est un état final
+        			
+        			state=State(s.id,s.init,True) #on crée donc un état avec le même état sauf qu'au lieu de TRUE on mets False 
+        			auto_inter.add(state)
+        			t=auto_inter.getListTransitionsFrom(s)
+        			for o in t :
+        				auto_inter.addTransition(Transition(state,o.etiquette,o.stateDest)
+        				auto_inter.removeTransition(o)
+        				auto_inter.removeState(s)
+        			
+      			
+        			
+	return auto_inter
+	
+	    def union (auto0, auto1): #A refaire
+        """ Automate x Automate -> Automate
+        rend l'automate acceptant pour langage l'union des langages des deux automates
+        """
+        print("UNION")
+        auto_inter= Automate.intersection(auto0, auto1) #On sait que l'union donne le même automate que l'intersection, sauf que les états finaux changent
+        
+       	etatfinal=auto0.getListFinalStates() #On récupère donc la liste des états finaux de l'automate 0 
+       
+       	etatfinal1=auto1.getListFinalStates() #On récupère aussi la liste des états finaux de l'automate 1
+        etat=etatfinal+etatfinal1 #reunis les deux listes pour obtenir la liste complètes des états finaux des 2 automates pour vérifier chaque état de auto_inter, s'il fait partie de cette liste, alors c'est un état final
+        
+        for s in auto_inter.listStates : #On parcours donc les états de l'automate auto_inter
+        	alpha=str(s.id) #On récupère les id pour comparer dans la liste pour voir s'ils sont dans la liste des états finaux
+        	print("alpha identifiant de letat en cours")
+        	print(alpha)
+        	print("id etats")
+        	print(s.id)
+        	
+        	for a in alpha : #on parcours donc la liste alpha pour comparer
+        		print("boucle for")
+        		print(a)
+        		print("avant etat")
+        		print(etat)
+        		print("apres etat")
+        		for pleurer in etat :
+        			print("debut de pleurer")
+        			print(pleurer)
+        			print("fin de pleurer")
+        			mama=a+"(fin)"
+        			print("mamamaaammmaa")
+        			print(mama)
+        			papa=pleurer
+        			if mama==papa : #si la lettre est dans la liste c'est un état final
+        				print("ETATCOEURRRRR")
+        				s.fin=True
+        				print("mamama")
+        			
+      			
+        			
+	return auto_inter
+	
+	    @staticmethod
+    def trueOrFalse(auto):
+    	"""automate*list->bool 
+    	rend true si l'état est final sinon false"""
+    	
+    	for e in auto.getListInitialStates():
+    		if e.fin==True:
+    			return True
+    	return False
+    	
+    	    def union (auto0, auto1): #A refaire
+        """ Automate x Automate -> Automate
+        rend l'automate acceptant pour langage l'union des langages des deux automates
+        """
+        print("UNION")
+        auto_inter= Automate.intersection(auto0, auto1) #On sait que l'union donne le même automate que l'intersection, sauf que les états finaux changent
+        
+       	etatfinal=auto0.getListFinalStates() #On récupère donc la liste des états finaux de l'automate 0 
+       
+       	etatfinal1=auto1.getListFinalStates() #On récupère aussi la liste des états finaux de l'automate 1
+        etat=etatfinal+etatfinal1 #reunis les deux listes pour obtenir la liste complètes des états finaux des 2 automates pour vérifier chaque état de auto_inter, s'il fait partie de cette liste, alors c'est un état final
+        taille=len(auto_inter.listStates) #taille de la liste des etats dans l'automate auto_inter
+        indice= 0#indice de la liste des états de auto_inter
+        while indice<taille : #On parcours donc les états de l'automate auto_inter
+        
+        	alpha=str(auto_inter.listStates[indice].label) #On récupère les id pour comparer dans la liste pour voir s'ils sont dans la liste des états finaux
+        	print("alpha identifiant de letat en cours")
+        	print(alpha)
+        	print("id etats")
+        	print(auto_inter.listStates[indice].label)
+        	tailleAlpha=len(alpha)
+        	print("taille alpha")
+        	print(tailleAlpha)
+        	indiceAlpha=0
+        	print("indice alpha")
+        	print(indiceAlpha)
+        	while indiceAlpha<tailleAlpha : #on parcours donc la liste alpha pour comparer
+        		print("boucle for")
+        		print(alpha[indiceAlpha])
+        		print("avant etat")
+        		print(etat)
+        		print("apres etat")
+        		for pleurer in etat :
+        			print("debut de pleurer")
+        			print(pleurer)
+        			print("fin de pleurer")
+        			mama=alpha[indiceAlpha]+"(fin)"
+        			print("mamamaaammmaa")
+        			print(mama)
+        			papa=pleurer
+        			if mama==papa : #si la lettre est dans la liste c'est un état final
+        				print("ETATCOEURRRRR")
+        				s.fin=True
+        				print("mamama")        				
+        		indiceAlpha=indiceAlpha+1     			
+      		indice=indice+1	
+        			
+	return auto_inter
+	
+	
+	======================================================================
+	
+	fichier teste
+	
+	
+	
+	"""
+
+
+
+#def accepte
+if Automate.estDeterministe(auto):
+	print ("L'automate complet")
+else:
+	print ("L'automate n'est pas complet")
+
+
+
+St0 = State(0,True,False)
+St1 = State(1,False,False)
+St2 = State(2,False, True)
+
+tr0 = Transition(St0,"a",St0)
+tr1 = Transition(St0,"a",St1)
+tr2 = Transition(St1,"b",St1)
+tr3 = Transition(St2,"b",St1)
+autocp = Automate([tr0,tr1,tr2,tr3])
+print(autocp)
+autocp.show("A_ListeTrans2")
+
+autopp = Automate.completeAutomate(autocp,"ab")
+print(autopp)
+autopp.show("A_ListeTrans3")
+
+#auto.removeTransition(t1)
+#print(auto)
+#auto.show("A_ListeTrans")
+
+#auto.addTransition(t1)
+#print(auto)
+#auto.show("A_ListeTrans")
+#auto1 = Automate([t0,t1,t2,t3,t4,t5],[s0,s1,s2])
+
+
+
+
+
+
+#print(auto1)
+#auto1.show("A_ListeTrans")
+
+#auto2 = Automate.creationAutomate("auto.txt")
+#print(auto2)
+#auto2.show("A_ListeTrans")
+
+#auto.removeState(s1)
+#print(auto)
+#auto.show("A_ListeTrans")
+#auto.addState(s1)
+#print(auto)
+#auto.show("A_ListeTrans")
+#s2 = State(0,True,False)
+#auto.addState(s2)
+#print(auto)
+#auto.show("A_ListeTrans")
+
+#auto.getListTransitionsFrom(s1)
+
+#Pour tester la fonction determinisation 
+
+stt0 = State(0,True,False)
+stt1 = State(1,False,False)
+stt2 = State(2,False,True)
+
+ttt0 = Transition(stt0,"a",stt0)
+ttt1 = Transition(stt0,"b",stt0)
+ttt2 = Transition(stt0,"a",stt1)
+ttt3 = Transition(stt1,"b",stt2)
+ttt4 = Transition(stt2,"a",stt2)
+ttt5 = Transition(stt2,"b",stt2)
+
+autoNonDeterministe = Automate([ttt0,ttt1,ttt2,ttt3,ttt4,ttt5])
+print(autoNonDeterministe)
+autoNonDeterministe.show("Auto_Non_Deterministe")
+
+Det = Automate.determinisation(autoNonDeterministe)
+print(Det)
+Det.show("Auto_Deterministe")
+
+
+#Pour tester la fonction Intersection
+sttt0a = State(0,True,False)
+sttt1a = State(1,False,False)
+sttt2a = State(2,False,True)
+
+tttt0a = Transition(sttt0a,"a",sttt0a)
+tttt1a = Transition(sttt0a,"b",sttt1a)
+tttt2a = Transition(sttt1a,"b",sttt1a)
+tttt3a = Transition(sttt1a,"a",sttt2a)
+tttt4a = Transition(sttt2a,"a",sttt2a)
+tttt5a = Transition(sttt2a,"b",sttt2a)
+
+autoInterA = Automate([tttt0a,tttt1a,tttt2a,tttt3a,tttt4a,tttt5a])
+
+
+sttt0b = State(0,True,False)
+sttt1b = State(1,False,False)
+sttt2b = State(2,False,True)
+
+tttt0b = Transition(sttt0b,"a",sttt0b)
+tttt1b = Transition(sttt0b,"b",sttt0b)
+tttt2b = Transition(sttt0b,"a",sttt1b)
+tttt3b = Transition(sttt1b,"b",sttt2b)
+tttt4b = Transition(sttt2b,"a",sttt2b)
+tttt5b = Transition(sttt2b,"b",sttt2b)
+
+autoInterB = Automate([tttt0b,tttt1b,tttt2b,tttt3b,tttt4b,tttt5b])
+
+autoInterAB = Automate.intersection(autoInterA,autoInterB)
+
+print(autoInterAB)
+autoInterAB.show("Auto_Intersection") 
+
+#Pour tester la fonction union
+stttt0a = State(0,True,False)
+stttt1a = State(1,False,False)
+stttt2a = State(2,False,True)
+
+ttttt0a = Transition(stttt0a,"a",stttt0a)
+ttttt1a = Transition(stttt0a,"b",stttt1a)
+ttttt2a = Transition(stttt1a,"b",stttt1a)
+ttttt3a = Transition(stttt1a,"a",stttt2a)
+ttttt4a = Transition(stttt2a,"a",stttt2a)
+ttttt5a = Transition(stttt2a,"b",stttt2a)
+
+autoInterAt = Automate([ttttt0a,ttttt1a,ttttt2a,ttttt3a,ttttt4a,ttttt5a])
+
+
+stttt0b = State(0,True,False)
+stttt1b = State(1,False,False)
+stttt2b = State(2,False,True)
+
+ttttt0b = Transition(stttt0b,"a",stttt0b)
+ttttt1b = Transition(stttt0b,"b",stttt0b)
+ttttt2b = Transition(stttt0b,"a",stttt1b)
+ttttt3b = Transition(stttt1b,"b",stttt2b)
+ttttt4b = Transition(stttt2b,"a",stttt2b)
+ttttt5b = Transition(stttt2b,"b",stttt2b)
+
+autoInterBt = Automate([ttttt0b,ttttt1b,ttttt2b,ttttt3b,ttttt4b,ttttt5b])
+
+autoInterABt = Automate.union(autoInterAt,autoInterBt)
+
+print(autoInterABt)
+autoInterAB.show("Auto_Union") 
